@@ -8,45 +8,57 @@ import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
-  Text,
-  View,
-  Image,
-  Dimensions
+  FlatList
 } from 'react-native';
+import Post from './src/components/Post'
 
-const screen = Dimensions.get('screen')
+
 
 export default class InstaluraMobile extends Component {
+
+  constructor() {
+    super()
+    this.state = {
+      fotos: []
+    }
+  }
+
+  componentDidMount() {
+    fetch('http://instalura-api.herokuapp.com/api/public/fotos/rafael')
+    //fetch('http://192.168.22.62:8080')
+    .then(response => response.json())
+    .then(json => 
+      this.setState({
+      fotos: json
+    }))
+  }
+
   render() {
+
+    /* const fotos = [
+      { id: 1, usuario: 'dani' },
+      { id: 2, usuario: 'naomi' }
+    ] */
+
     return (
-      <View style={{marginTop: 20}}>
-        <Text>
-          Nominho
-        </Text>
-        <Image source={require('./resources/img/alura.jpg')} 
-        style={{width: screen.width, height: screen.width}}/>
-      </View>
+
+      <FlatList
+        data={this.state.fotos}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) =>
+
+          <Post foto={item}/>
+
+        }
+      />
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+
+  }
 });
 
 AppRegistry.registerComponent('InstaluraMobile', () => InstaluraMobile);
