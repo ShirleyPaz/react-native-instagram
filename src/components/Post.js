@@ -30,16 +30,17 @@ export default class Post extends Component {
             require('../../resources/img/s2-checked.png')
             : require('../../resources/img/s2.png')
     }
-    
-    exibeLikes(likers) {
-        if (likers.length <= 0) 
-            return 
 
-        return
+    exibeLikes(likers) {
+        //   console.warn('likers', likers.length)
+        if (likers.length <= 0)
+            return
+
+        return (
             <Text style={styles.curtidas}>
                 {likers.length} curtidas
             </Text>
-        
+        )
     }
 
     like = () => {
@@ -49,11 +50,11 @@ export default class Post extends Component {
         if (!this.state.foto.likeada) {
             novaLista = [
                 ...this.state.foto.likers,
-                {login: 'meuUser'}
+                { login: 'meuUser' }
             ]
         } else {
             novaLista = this.state.foto.likers.filter(liker => {
-                liker.login !== 'meuUser'
+                return liker.login !== 'meuUser'
             })
         }
 
@@ -66,6 +67,22 @@ export default class Post extends Component {
         this.setState({
             foto: fotoAtualizada
         })
+    }
+
+    exibeLegenda(foto) {
+        if (foto.comentario === '')
+            return
+
+        return (
+            <View style={styles.legenda}>
+                <Text style={styles.titleLegenda}>
+                    {foto.loginUsuario}
+                </Text>
+                <Text>
+                    {foto.comentario}
+                </Text>
+            </View>
+        )
     }
 
 
@@ -95,6 +112,19 @@ export default class Post extends Component {
                     </TouchableOpacity>
 
                     {this.exibeLikes(foto.likers)}
+
+                    {this.exibeLegenda(foto)}
+
+                    {foto.comentarios.map(comentario => {
+                        <View style={styles.legenda}>
+                            <Text style={styles.titleLegenda}>
+                                {comentario.login}
+                            </Text>
+                            <Text>
+                                {comentario.texto}
+                            </Text>
+                        </View>
+                    })}
 
                 </View>
             </View>
@@ -127,7 +157,15 @@ const styles = StyleSheet.create({
         height: 40
     },
     curtidas: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginBottom: 10
+    },
+    legenda: {
+        flexDirection: 'row'
+    },
+    titleLegenda: {
+        fontWeight: 'bold',
+        marginRight: 5
     }
 });
 
