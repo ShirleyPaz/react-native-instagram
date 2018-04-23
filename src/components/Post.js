@@ -11,7 +11,8 @@ import {
     View,
     Image,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    TextInput
 } from 'react-native';
 
 const screen = Dimensions.get('screen')
@@ -21,7 +22,8 @@ export default class Post extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            foto: this.props.foto
+            foto: this.props.foto,
+            valorComentario: ''
         }
     }
 
@@ -85,6 +87,35 @@ export default class Post extends Component {
         )
     }
 
+    addComentario = () => {
+        
+
+        if (this.state.valorComentario === '')
+            return
+
+        const novaLista = [
+            ...this.state.foto.comentarios,
+            {
+                id: this.state.valorComentario,
+                login: 'meuUsuario',
+                texto: this.state.valorComentario
+            }
+        ]
+
+        const fotoAtualizada = {
+            ...this.state.foto,
+            comentarios: novaLista
+        }
+
+        this.setState({
+            foto: fotoAtualizada
+        })
+
+        console.warn(this.state.valorComentario)
+
+        this.inputComentario.clear()
+    }
+
 
     render() {
 
@@ -115,16 +146,31 @@ export default class Post extends Component {
 
                     {this.exibeLegenda(foto)}
 
-                    {foto.comentarios.map(comentario => {
-                        <View style={styles.legenda}>
+                    {foto.comentarios.map(comentario =>
+                        <Text style={styles.legenda}
+                            key={comentario.id}>
                             <Text style={styles.titleLegenda}>
                                 {comentario.login}
                             </Text>
                             <Text>
                                 {comentario.texto}
                             </Text>
-                        </View>
-                    })}
+                        </Text>
+                    )}
+
+                    <View style={styles.comment}>
+                        <TextInput style={styles.input}
+                            placeholder="Add comentário ae"
+                            underlineColorAndroid="transparent"
+                            ref={input => this.inputComentario = input}
+                            onChangeText={texto => this.setState({ valorComentario: texto })}
+                        />
+
+                        <TouchableOpacity onPress={this.addComentario}>
+                            <Image style={styles.btnComment}
+                                source={require('../../resources/img/send.png')} />
+                        </TouchableOpacity>
+                    </View>
 
                 </View>
             </View>
@@ -166,6 +212,22 @@ const styles = StyleSheet.create({
     titleLegenda: {
         fontWeight: 'bold',
         marginRight: 5
+    },
+    input: {
+        height: 40,
+        fontSize: 14,
+        flex: 1
+    },
+    btnComment: {
+        height: 30,
+        width: 30
+    },
+    comment: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd'
     }
 });
 
