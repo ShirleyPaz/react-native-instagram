@@ -14,6 +14,8 @@ import {
     TouchableOpacity,
     TextInput
 } from 'react-native';
+import InputComentario from './InputComentario'
+import Likes from './Likes'
 
 const screen = Dimensions.get('screen')
 
@@ -22,27 +24,8 @@ export default class Post extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            foto: this.props.foto,
-            valorComentario: ''
+            foto: this.props.foto
         }
-    }
-
-    carregaIcon(likeada) {
-        return likeada ?
-            require('../../resources/img/s2-checked.png')
-            : require('../../resources/img/s2.png')
-    }
-
-    exibeLikes(likers) {
-        //   console.warn('likers', likers.length)
-        if (likers.length <= 0)
-            return
-
-        return (
-            <Text style={styles.curtidas}>
-                {likers.length} curtidas
-            </Text>
-        )
     }
 
     like = () => {
@@ -87,10 +70,9 @@ export default class Post extends Component {
         )
     }
 
-    addComentario = () => {
-        
+    addComentario = (valorComentario) => {
 
-        if (this.state.valorComentario === '')
+        if (valorComentario === '')
             return
 
         const novaLista = [
@@ -98,7 +80,7 @@ export default class Post extends Component {
             {
                 id: this.state.valorComentario,
                 login: 'meuUsuario',
-                texto: this.state.valorComentario
+                texto: valorComentario
             }
         ]
 
@@ -111,9 +93,6 @@ export default class Post extends Component {
             foto: fotoAtualizada
         })
 
-        console.warn(this.state.valorComentario)
-
-        this.inputComentario.clear()
     }
 
 
@@ -137,16 +116,15 @@ export default class Post extends Component {
                     style={styles.postPic} />
 
                 <View style={styles.footer}>
-                    <TouchableOpacity onPress={this.like}>
-                        <Image source={this.carregaIcon(foto.likeada)}
-                            style={styles.likeButton} />
-                    </TouchableOpacity>
-
-                    {this.exibeLikes(foto.likers)}
+                    <Likes
+                        likeCallback={this.like}
+                        foto={foto}
+                    />
 
                     {this.exibeLegenda(foto)}
 
-                    {foto.comentarios.map(comentario =>
+                    {foto.comentarios.map(comentario => 
+                        
                         <Text style={styles.legenda}
                             key={comentario.id}>
                             <Text style={styles.titleLegenda}>
@@ -158,19 +136,7 @@ export default class Post extends Component {
                         </Text>
                     )}
 
-                    <View style={styles.comment}>
-                        <TextInput style={styles.input}
-                            placeholder="Add comentário ae"
-                            underlineColorAndroid="transparent"
-                            ref={input => this.inputComentario = input}
-                            onChangeText={texto => this.setState({ valorComentario: texto })}
-                        />
-
-                        <TouchableOpacity onPress={this.addComentario}>
-                            <Image style={styles.btnComment}
-                                source={require('../../resources/img/send.png')} />
-                        </TouchableOpacity>
-                    </View>
+                    <InputComentario comentarioCallback={this.addComentario} />
 
                 </View>
             </View>
@@ -198,14 +164,6 @@ const styles = StyleSheet.create({
     footer: {
         margin: 10
     },
-    likeButton: {
-        width: 40,
-        height: 40
-    },
-    curtidas: {
-        fontWeight: 'bold',
-        marginBottom: 10
-    },
     legenda: {
         flexDirection: 'row'
     },
@@ -213,22 +171,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginRight: 5
     },
-    input: {
-        height: 40,
-        fontSize: 14,
-        flex: 1
-    },
-    btnComment: {
-        height: 30,
-        width: 30
-    },
-    comment: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderBottomWidth: 1,
-        borderBottomColor: '#ddd'
-    }
+
 });
 
 
