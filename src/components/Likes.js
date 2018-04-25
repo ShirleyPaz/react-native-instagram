@@ -29,10 +29,12 @@ export default class Likes extends Component {
 
     render() {
         const { likeCallback, foto } = this.props
+
         return (
+            
             <View>
 
-                <TouchableOpacity onPress={likeCallback}>
+                <TouchableOpacity onPress={() => likeCallback(foto.id)}>
                     <Image source={this.carregaIcon(foto.likeada)}
                         style={styles.likeButton} />
                 </TouchableOpacity>
