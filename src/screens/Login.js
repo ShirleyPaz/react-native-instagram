@@ -49,13 +49,13 @@ export default class Login extends Component {
 
                 AsyncStorage.setItem('usuario', JSON.stringify(usuario))
 
-                /* AsyncStorage.getItem('usuario')
-                    .then(usuarioString => JSON.parse(usuarioString) )
-                    .then(usuario => console.warn()) */
-                console.warn('logou')
+                this.props.navigator.resetTo({
+                    screen: 'TelaFeed',
+                    title: 'Instalura'
+                })
             })
             .catch(error => {
-                this.setState({validacao: error.message})
+                this.setState({ validacao: error.message })
             })
     }
 
@@ -95,9 +95,9 @@ export default class Login extends Component {
                 </Text>
 
                 <Button style={styles.btnLogin}
-                        title="deslogar"
-                        onPress={this.logout}
-                    />
+                    title="deslogar"
+                    onPress={this.logout}
+                />
 
             </View>
         )
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#000'
     },
     erro: {
-        marginTop: 20, 
+        marginTop: 20,
         color: '#E84329'
     }
 })
