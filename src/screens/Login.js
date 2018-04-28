@@ -20,6 +20,11 @@ export default class Login extends Component {
         }
     }
 
+    componentDidMount() {
+        fetch('http://instalura-api.herokuapp.com/gera/dados')
+        .then(response => response)
+    }
+
     fazLogin = () => {
 
         const request = {
@@ -35,6 +40,7 @@ export default class Login extends Component {
 
         // const uri = 'http://192.168.0.137:8080/api/public/login'
         const uri = 'http://instalura-api.herokuapp.com/api/public/login'
+        
         fetch(uri, request)
             .then(response => {
                 if (!response.ok)

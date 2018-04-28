@@ -37,7 +37,7 @@ export default class InstaluraFetch {
 
     static post(recurso, dados) {
 
-        const uri = `http://instalura-api.dfvfvherokuapp.com/api${recurso}`
+        const uri = `http://instalura-api.herokuapp.com/api${recurso}`
 
         return AsyncStorage.getItem('usuario')
             // AsyncStorage.getItem('token')

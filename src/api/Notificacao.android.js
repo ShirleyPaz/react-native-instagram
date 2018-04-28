@@ -1,14 +1,12 @@
 
 import {
-    AlertIOS,
-    ToastAndroid,
-    Platform
+    ToastAndroid
 } from 'react-native'
 
 export default class Notificacao {
     static exibe(mensagem) {
 
-        ToastAndroid.alert(mensagem, ToastAndroid.SHORT)
+        ToastAndroid.show(mensagem, ToastAndroid.SHORT)
 
     }
 }
