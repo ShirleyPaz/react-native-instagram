@@ -33,7 +33,8 @@ export default class Login extends Component {
             })
         }
 
-        const uri = 'http://192.168.0.137:8080/api/public/login'
+        // const uri = 'http://192.168.0.137:8080/api/public/login'
+        const uri = 'http://instalura-api.herokuapp.com/api/public/login'
         fetch(uri, request)
             .then(response => {
                 if (!response.ok)
@@ -48,6 +49,8 @@ export default class Login extends Component {
                 }
 
                 AsyncStorage.setItem('usuario', JSON.stringify(usuario))
+                /* AsyncStorage.setItem('usuario', this.state.usuario)
+                AsyncStorage.setItem('token', token) */
 
                 this.props.navigator.resetTo({
                     screen: 'TelaFeed',
@@ -55,6 +58,7 @@ export default class Login extends Component {
                 })
             })
             .catch(error => {
+                console.warn('nao logou')
                 this.setState({ validacao: error.message })
             })
     }
@@ -94,10 +98,10 @@ export default class Login extends Component {
                     {this.state.validacao}
                 </Text>
 
-                <Button style={styles.btnLogin}
+                {/* <Button style={styles.btnLogin}
                     title="deslogar"
                     onPress={this.logout}
-                />
+                /> */}
 
             </View>
         )
