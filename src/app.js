@@ -17,19 +17,17 @@ export default () => {
     AsyncStorage.getItem('usuario')
     .then(usuario => {
         if (usuario)
-        return {
-            screen: 'TelaFeed',
-            title: 'Instalura'
-        }
+            return {
+                screen: 'TelaFeed',
+                title: 'Instalura'
+            }
 
         return {
                 screen: 'TelaLogin',
-                title: 'Tela de Login',
                 navigatorStyle: {
                     navBarHidden: true
                 }
         }
     })
-
-    Navigation.startSingleScreenApp({ screen })
+    .then(screen => Navigation.startSingleScreenApp({ screen }))   
 }
